@@ -1,0 +1,27 @@
+---
+import Tags from './Tags.astro';
+import Metadata from './Metadata.astro';
+
+interface Props {
+    title: string;
+    datePublished: Date;
+    tags: string[];
+    readTime: number | null;
+}
+
+const { title, datePublished, tags, readTime } = Astro.props;
+---
+
+<Metadata date={datePublished} readTime={readTime} />
+
+<h1>{title}</h1>
+
+{tags.length > 0 ? <Tags tags={tags} /> : null}
+
+<style>
+    h1 {
+        margin: 0;
+        font-size: 4rem;
+        line-height: 1;
+    }
+</style>

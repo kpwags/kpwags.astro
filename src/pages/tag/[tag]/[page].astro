@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { combineBlogAndReadingLog, getPageCount, getUniqueTags } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+import type { CombinedPost } from 'src/models/CombinedPost';
+
+interface Props {
+    name: string;
+    url: string;
+    posts: CombinedPost[];
+    page: number;
+    pageCount: number;
+}
+
+interface TagPage {
+    params: { tag: string; page: number };
+    props: Props;
+}
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection('blog');
+    const readingLogs = await getCollection('readinglogs');
+
+    const uniqueTags = getUniqueTags(blogEntries, readingLogs);
+
+    const returnValue: TagPage[] = [];
+
+    uniqueTags.forEach((tag) => {
+        const filteredBlogEntries = blogEntries.filter((blog) => blog.data.tags.includes(tag.name));
+        const filteredReadingLogs = readingLogs.filter((log) => log.data.tags.includes(tag.name));
+        const allPosts = combineBlogAndReadingLog(filteredBlogEntries, filteredReadingLogs);
+        const pageCount = getPageCount(allPosts, 10);
+
+        if (pageCount === 1) {
+            returnValue.push({
+                params: {
+                    tag: tag.url,
+                    page: 1,
+                },
+                props: {
+                    name: tag.name,
+                    url: tag.url,
+                    posts: allPosts,
+                    page: 1,
+                    pageCount: 1,
+                },
+            });
+        } else {
+            for (let x = 1; x <= pageCount; x += 1) {
+                returnValue.push({
+                    params: {
+                        tag: tag.url,
+                        page: x,
+                    },
+                    props: {
+                        name: tag.name,
+                        url: tag.url,
+                        posts: allPosts,
+                        page: x,
+                        pageCount,
+                    },
+                });
+            }
+        }
+    });
+
+    return returnValue;
+}
+
+const { name, url, posts, page, pageCount } = Astro.props;
+
+const start = (page - 1) * 10;
+const end = start + 10;
+
+const taggedPosts = posts.slice(start, end);
+---
+
+<BaseLayout title={`Posts Tagged ${name} - Keith Wagner`}>
+    <main>
+        <h1>Posts Tagged {name}</h1>
+
+        {taggedPosts.map((post) => <BlogLink title={post.title} link={post.link} date={post.date} tags={post.tags} excerpt={post.excerpt} />)}
+
+        <section class="pagination">
+            {page > 1 ? <a href={`/tag/${url}/${page - 1}`}>&leftarrow; Newer Reading Logs</a> : null}
+            {page < pageCount ? <a href={`/tag/${url}/${page + 1}`}>Older Reading Logs &rightarrow;</a> : null}
+        </section>
+    </main>
+</BaseLayout>

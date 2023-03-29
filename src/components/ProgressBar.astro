@@ -1,0 +1,97 @@
+---
+interface Props {
+    color: string;
+    currentValue: number;
+    fullValue: number;
+    format?: 'none' | 'money' | 'thousands';
+}
+
+const { color, currentValue, fullValue, format = 'none' } = Astro.props;
+
+let currentPercentage = 0;
+
+if (currentValue > fullValue) {
+    currentPercentage = 100;
+} else {
+    currentPercentage = Math.round((currentValue / fullValue) * 100);
+}
+
+const actualPercentage = Math.round((currentValue / fullValue) * 100);
+
+let formattedCurrentValue: number | string = Math.round(currentValue);
+let formattedFullValue: number | string = Math.round(fullValue);
+
+const moneyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+});
+
+const formatWithThousands = (val: number) => val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+switch (format) {
+    case 'money':
+        formattedCurrentValue = moneyFormatter.format(formattedCurrentValue);
+        formattedFullValue = moneyFormatter.format(formattedFullValue);
+        break;
+
+    case 'thousands':
+        formattedCurrentValue = formatWithThousands(formattedCurrentValue);
+        formattedFullValue = formatWithThousands(formattedFullValue);
+        break;
+
+    default:
+        break;
+}
+---
+
+<div class="container">
+    <div class="bar">
+        <div class="inner-bar" style={{ backgroundColor: color, width: `${currentPercentage}%` }}></div>
+    </div>
+    <p class="bar-legend">{formattedCurrentValue} / {formattedFullValue} ({actualPercentage}%)</p>
+</div>
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 9fr 3fr;
+        grid-column-gap: 12px;
+    }
+
+    .bar {
+        height: 40px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: #666;
+        position: relative;
+        margin: 0 0 25px 0;
+    }
+
+    .inner-bar {
+        height: 100%;
+    }
+
+    .bar-legend {
+        line-height: 40px;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media all and (max-width: 500px) {
+        .container {
+            display: block;
+        }
+
+        .bar {
+            margin: 0 0 10px 0;
+        }
+
+        .bar-legend {
+            line-height: 1;
+            margin: 0 0 25px 0;
+            text-align: center;
+        }
+    }
+</style>

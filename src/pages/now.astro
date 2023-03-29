@@ -1,0 +1,80 @@
+---
+import now from '@data/now';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MediaListing from '@components/MediaListing.astro';
+---
+
+<BaseLayout title="Now - Keith Wagner">
+    <div class="cover now-img"></div>
+    <main>
+        <div class="container">
+            <h1>What I&apos;m Currently Up To</h1>
+
+            <p class="last-update">
+                Last Updated: {now.lastUpdate}
+            </p>
+
+            <h2>Reading</h2>
+
+            <div class="item-grid">
+                {now.reading.map((book) => <MediaListing media={book} />)}
+            </div>
+
+            <h2>Playing</h2>
+
+            <div class="item-grid">
+                {now.playing.map((game) => <MediaListing media={game} />)}
+            </div>
+
+            <h2>Watching</h2>
+
+            <div class="item-grid">
+                {now.watching.map((tvShow) => <MediaListing media={tvShow} />)}
+            </div>
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .now-img {
+        background-image: url('/images/covers/now.jpg');
+        background-position: 50% 50%;
+    }
+
+    .container h2 {
+        margin: 25px 0 20px;
+    }
+
+    .last-update {
+        margin: 12px 0;
+        font-style: italic;
+    }
+
+    .item-grid {
+        margin: 0 0 40px;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-column-gap: 10px;
+        grid-row-gap: 20px;
+        align-items: start;
+        justify-items: center;
+    }
+
+    @media all and (max-width: 767px) {
+        .container h1 {
+            font-size: 1.8rem;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .container p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .item-grid {
+            display: block;
+        }
+    }
+</style>

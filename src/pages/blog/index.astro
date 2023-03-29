@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { calculateReadingTime, getPermalink, getPostExcerpt, sortPosts } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+const blogPosts = await getCollection('blog');
+
+let posts = sortPosts(blogPosts);
+posts = posts.filter((p) => !p.data.isRssOnly).slice(0, 10);
+---
+
+<BaseLayout title="Blog - Keith Wagner">
+    <main>
+        {
+            posts.map((post) => (
+                <BlogLink
+                    title={post.data.title}
+                    link={getPermalink(post)}
+                    date={post.data.date}
+                    tags={post.data.tags}
+                    excerpt={post.data.excerpt || getPostExcerpt(post.body)}
+                    readTime={calculateReadingTime(post.body)}
+                />
+            ))
+        }
+
+        <section class="pagination">
+            <a href="/blog/2">Older Posts &rightarrow;</a>
+        </section>
+    </main>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+const { src, alt, width, height, credit, centered, shadowed } = Astro.props;
+---
+
+<div class={`image-container ${centered ? 'centered' : ''} ${shadowed ? 'shadowed' : ''}`}>
+    <img src={src} alt={alt} width={width} height={height} />
+    {credit && <div class="credit">{credit}</div>}
+</div>
+
+<style>
+    .image-container {
+        margin: 30px 0;
+        max-width: 80%;
+    }
+
+    .image-container img {
+        max-width: 100%;
+        display: inline;
+    }
+
+    .centered {
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .centered img {
+        text-align: center;
+    }
+
+    .shadowed img { {
+        box-shadow: var(--box-shadow);
+    }
+
+    .credit {
+        margin: 10px 35px;
+        color: hsl(0, 0%, 60%);
+        font-style: italic;
+    }
+</style>
