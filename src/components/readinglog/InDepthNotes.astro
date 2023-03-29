@@ -1,0 +1,22 @@
+---
+const { source, title, url } = Astro.props;
+---
+
+<div class="inDepthNotes">
+    <h3><span class="source">{source}:</span> <a href={url}>{title}</a></h3>
+    <slot />
+</div>
+
+<style>
+    .inDepthNotes {
+        margin-bottom: 2rem;
+    }
+
+    .inDepthNotes h3 {
+        font-size: 1.85rem;
+    }
+
+    .inDepthNotes .source {
+        color: var(--text);
+    }
+</style>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import PostHeading from '@components/shared/PostHeading.astro';
+
+export async function getStaticPaths() {
+    const readingLogEntries = await getCollection('readinglogs');
+
+    return readingLogEntries.map((entry) => ({
+        params: {
+            id: entry.data.id,
+        },
+        props: {
+            title: entry.data.title,
+            date: entry.data.date,
+            tags: entry.data.tags,
+            entry,
+        },
+    }));
+}
+
+const { title, date, entry, tags } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={`${title} - Keith Wagner`}>
+    <main>
+        <article class="reading-log">
+            <PostHeading title={title} datePublished={date} tags={tags} readTime={null} />
+            <Content />
+        </article>
+    </main>
+</BaseLayout>

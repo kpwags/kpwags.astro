@@ -1,0 +1,79 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import MediaListing from '@components/MediaListing.astro';
+import tv from '@data/tv';
+---
+
+<BaseLayout title="TV - Keith Wagner">
+    <div class="cover tv-img"></div>
+    <main class="full-width">
+        <h1>TV</h1>
+
+        <p>
+            I&apos;ve certainly seen more than this, but I figured I&apos;d update this list with some of my thoughts for the TV series I&apos;ve
+            watched and am currently watching.
+        </p>
+
+        <p class="last-update">
+            Last Updated: {tv.lastUpdate}
+        </p>
+
+        <h2 class="heading">Currently Watching</h2>
+        <div class="items">
+            {tv.current.map((series) => <MediaListing media={series} includeReview />)}
+        </div>
+
+        <h2 class="heading">In-Between Seasons</h2>
+        <div class="items">
+            {tv.continuing.map((series) => <MediaListing media={series} includeReview />)}
+        </div>
+
+        <h2 class="heading">Completed</h2>
+        <div class="items">
+            {tv.completed.map((series) => <MediaListing media={series} includeReview />)}
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .tv-img {
+        background-image: url('/images/covers/tv.jpg');
+        background-position: 49% 32%;
+    }
+
+    h2.heading {
+        margin: 1.5rem 0 1.25rem;
+    }
+
+    .last-update {
+        margin: 1rem 0;
+        font-style: italic;
+    }
+
+    .items {
+        margin: 0 0 40px;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-column-gap: 10px;
+        grid-row-gap: 40px;
+        justify-items: center;
+    }
+
+    @media all and (max-width: 767px) {
+        .container h1 {
+            font-size: 1.8rem;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .container p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .items {
+            display: block;
+        }
+    }
+</style>

@@ -1,0 +1,21 @@
+---
+interface Props {
+    text: string;
+    name: string;
+    twitterUsername: string;
+    tweetUrl: string;
+    tweetDate: string;
+}
+
+const { text, name, twitterUsername, tweetUrl, tweetDate } = Astro.props;
+---
+
+<script async src="https://platform.twitter.com/widgets.js"></script>
+<blockquote class="twitter-tweet" style={{ marginTop: '2.5rem', marginBottom: '2.5rem' }}>
+    <p lang="en" dir="ltr">{text}</p>
+    &mdash;
+    {' '}
+    {`${name} (@${twitterUsername})`}
+    {' '}
+    <a href={tweetUrl} target="_blank" rel="noopener noreferrer">{tweetDate}</a>
+</blockquote>

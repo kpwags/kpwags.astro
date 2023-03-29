@@ -1,0 +1,93 @@
+---
+import LightDarkSwitch from './LightDarkSwitch.astro';
+import SettingsButton from './SettingsButton.astro';
+import SiteThemeBar from './SiteThemeBar.astro';
+---
+
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Keith Wagner" />
+            <a href="/">Keith Wagner</a>
+        </div>
+        <nav>
+            <a href="/blog">Blog</a>
+            <a href="/reading-logs">Reading Logs</a>
+            <a href="/reading-logs">Photography</a>
+            <a href="/about">About</a>
+        </nav>
+    </div>
+    <div class="config">
+        <SettingsButton />
+        <LightDarkSwitch />
+    </div>
+</header>
+<SiteThemeBar />
+
+<style>
+    header {
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    header div.container {
+        display: flex;
+        justify-content: flex-start;
+        padding: 10px;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    header div.logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    header div.logo img {
+        height: 36px;
+        width: 36px;
+    }
+
+    header div.logo a {
+        font-size: 1.5rem;
+        line-height: 36px;
+    }
+
+    header div.logo a:hover {
+        text-decoration: none;
+    }
+
+    header nav {
+        margin-left: 2rem;
+    }
+
+    header nav a {
+        padding-right: 1.5rem;
+    }
+
+    header div.config {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+</style>
+
+<script>
+    const toggleSettingsButton = document.getElementById('toggle-settings');
+
+    if (toggleSettingsButton) {
+        toggleSettingsButton.addEventListener('click', () => {
+            const themeControlBar = document.getElementById('site-theme-control');
+
+            if (themeControlBar) {
+                if (themeControlBar.style.display === 'none') {
+                    themeControlBar.style.display = 'block';
+                } else {
+                    themeControlBar.style.display = 'none';
+                }
+            }
+        });
+    }
+</script>

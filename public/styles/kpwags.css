@@ -1,0 +1,335 @@
+/* --- CSS Reset --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding: 0;
+}
+
+#root,
+#__next {
+    isolation: isolate;
+}
+
+/* --- End Reset --- */
+
+html,
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 100%;
+    font-family: var(--font);
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    width: min(100ch, 100vw - 2rem);
+    margin: 2rem auto;
+    padding: 0 10px;
+    max-width: 100%;
+}
+
+main.full-width {
+    width: 100%;
+    padding: 0 25px;
+}
+
+main.slim {
+    width: min(70ch, 100vw - 2rem);
+    margin: 2rem auto;
+    padding: 0 10px;
+    max-width: 100%;
+}
+
+.cover {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    background-position: 50% 50%;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-weight: 500;
+    color: var(--primary-color-1);
+    font-size: 2.6rem;
+    margin: 2rem 0;
+    padding: 0;
+}
+
+h2 {
+    font-weight: 400;
+    color: var(--primary-color-2);
+    font-size: 2.2rem;
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    color: var(--primary-color-2);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+h1 span,
+h2 span,
+h3 span {
+    white-space: nowrap;
+}
+
+h1.text,
+h2.text,
+h3.text {
+    color: var(--text);
+}
+
+p {
+    line-height: 1.8;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+}
+
+a,
+a:visited {
+    color: var(--primary-color-1);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary-color-2);
+    text-decoration: underline;
+}
+
+a img {
+    border: none;
+}
+
+article.blog-post .content h2,
+article.reading-log .content h2 {
+    margin: 20px 0;
+}
+
+article.blog-post .content h3,
+article.reading-log .content h3 {
+    margin: 20px 0;
+}
+
+article.blog-post .content h4,
+article.reading-log .content h4 {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+article.blog-post .content h4 code {
+    font-size: 1.1rem;
+    font-weight: normal;
+}
+
+@media screen and (max-width: 425px) {
+    article.blog-post .metadata {
+        display: block;
+    }
+
+    article.blog-post .metadata .read-time {
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    article.blog-post .metadata .separator {
+        display: none;
+    }
+}
+
+article.blog-post .metadata svg {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+article.blog-post .metadata svg path {
+    fill: var(--meta);
+}
+
+article.blog-post .content blockquote {
+    border-left: 8px solid var(--primary-color-2);
+    padding-left: 40px;
+    margin: 30px 0;
+}
+
+article.blog-post .content blockquote p {
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--primary-color-1);
+}
+
+article.blog-post .content blockquote.small {
+    border-left: none;
+    padding-left: 20px;
+    margin: 15px 0;
+    font-size: 1.7rem;
+    line-height: 1.75;
+    font-style: italic;
+    color: var(--primary-color-1);
+    margin-bottom: 25px;
+}
+
+article.blog-post .content hr {
+    width: 250px;
+    margin: 40px auto;
+    border-bottom: 1px solid hsl(0, 0%, 87.1%);
+    background-color: transparent;
+}
+
+article.blog-post .content div.centered-image {
+    text-align: center;
+    margin: 30px 0;
+}
+
+article.blog-post .content div.centered-image img {
+    max-width: 80%;
+}
+
+article.blog-post .content div.centered-image img.shadowed {
+    box-shadow: var(--box-shadow);
+}
+
+article.blog-post .content div.centered-image .credit {
+    margin: 10px 0;
+    color: var(--grey-1);
+}
+
+article.blog-post .content div.centered-image .caption {
+    margin: 15px 0 10px 0;
+    font-style: italic;
+    color: var(--grey-1);
+}
+
+article.blog-post .content pre {
+    margin: 2rem;
+    padding: 1.2rem;
+    font-size: 1.25rem;
+}
+
+article.blog-post .content p {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+article.blog-post .content p code {
+    font-size: 1.5rem;
+}
+
+article.blog-post p a {
+    font-weight: normal;
+}
+
+article.blog-post p a:hover {
+    text-decoration: underline;
+}
+
+article.blog-post .domain-name {
+    font-style: italic;
+    color: var(--meta);
+}
+
+article.blog-post .content ul,
+article.blog-post .content ol {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 0 25px 40px 25px;
+}
+
+article.blog-post .content ul li,
+article.blog-post .content ol li {
+    padding-left: 12px;
+}
+
+.reading-log .content blockquote {
+    border-left: none;
+    padding-left: 20px;
+    margin: 15px 0;
+    font-size: 1.7rem;
+    line-height: 1.75;
+    font-style: italic;
+    color: var(--primary-color-2);
+    margin-bottom: 25px;
+}
+
+.reading-log .content h2 {
+    margin: 20px 0;
+}
+
+.reading-log .content h3 {
+    color: var(--text);
+    font-size: 1.85rem;
+    margin: 20px 0;
+}
+
+.reading-log .content h4 {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.twitter-tweet-rendered {
+    margin: 30px auto !important;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    font-size: 1.25rem;
+    margin: 2rem 0;
+}

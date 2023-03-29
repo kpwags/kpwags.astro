@@ -1,0 +1,38 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+const { title } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <link rel="stylesheet" href="/styles/variables.css" />
+        <link rel="stylesheet" href="/styles/fonts.css" />
+        <link rel="stylesheet" href="/styles/kpwags.css" />
+    </head>
+    <body>
+        <Header />
+        <slot />
+        <Footer />
+    </body>
+</html>
+
+<script>
+    import { getCurrentTheme, getPreferredColorMode } from '@lib/configUtils';
+
+    const currentTheme = getCurrentTheme();
+
+    if (currentTheme.mode !== 'system') {
+        document.documentElement.setAttribute('data-theme', currentTheme.mode);
+    } else {
+        document.documentElement.setAttribute('data-theme', getPreferredColorMode());
+    }
+
+    document.documentElement.setAttribute('data-color-theme', currentTheme.color);
+    document.documentElement.setAttribute('data-font-theme', currentTheme.font);
+</script>

@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import games from '@data/videogames';
+import MediaListing from '@components/MediaListing.astro';
+---
+
+<BaseLayout title="Video Games - Keith Wagner">
+    <div class="cover video-games-img"></div>
+    <main class="full-width">
+        <h1>Video Games</h1>
+
+        <p>
+            I&apos;ve certainly played more than this, but I figured I&apos;d update this list with some of my thoughts for the video games I&apos;ve
+            played and am currently playing.
+        </p>
+
+        <p class="last-update">
+            Last Updated: {games.lastUpdate}
+        </p>
+
+        <h2 class="heading">Currently Playing</h2>
+        <div class="items">
+            {games.current.map((g) => <MediaListing media={g} includeReview={false} />)}
+        </div>
+
+        <h2 class="heading">Played</h2>
+
+        <p>
+            ✅ - indicates that I finished the game<br />
+            ❌ - indicates that I did not finish the game
+        </p>
+
+        <div class="items padded-top">
+            {games.played.map((g) => <MediaListing media={g} includeReview />)}
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .video-games-img {
+        background-image: url('/images/covers/video-games.jpg');
+        background-position: 50% 69%;
+    }
+
+    h2.heading {
+        margin: 1.5rem 0 1.25rem;
+    }
+
+    .last-update {
+        margin: 1rem 0;
+        font-style: italic;
+    }
+
+    .items {
+        margin: 0 0 40px;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-column-gap: 10px;
+        grid-row-gap: 40px;
+        justify-items: center;
+    }
+
+    .padded-top {
+        margin-top: 2rem;
+    }
+
+    @media all and (max-width: 900px) {
+        .container {
+            width: 600px;
+        }
+    }
+
+    @media all and (max-width: 767px) {
+        .container {
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        .container h1 {
+            font-size: 1.8rem;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .container p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .items {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    const toggleButtons = document.querySelectorAll('button.toggle-thoughts');
+
+    const toggleThoughts = (thoughtsId: string) => {
+        const thoughtsDiv = document.getElementById(thoughtsId) as HTMLDivElement;
+
+        if (!thoughtsDiv) {
+            return;
+        }
+
+        if (thoughtsDiv.style.display === 'none') {
+            thoughtsDiv.style.display = 'block';
+        } else {
+            thoughtsDiv.style.display = 'none';
+        }
+    };
+
+    toggleButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const btn = e.target as HTMLButtonElement;
+
+            const thoughtsId = btn.getAttribute('data-thoughtsId') as string;
+            toggleThoughts(thoughtsId);
+        });
+    });
+</script>

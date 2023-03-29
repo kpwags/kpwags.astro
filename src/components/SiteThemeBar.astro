@@ -1,0 +1,134 @@
+<div class="bar" id="site-theme-control" style="display: none">
+    <div class="theme-options">
+        <div class="color-theme-bar">
+            <h3>Colors</h3>
+            <div class="color-buttons">
+                <button type="button" data-color="red" title="red" class="theme-color red"> &nbsp;</button>
+                <button type="button" data-color="orange" title="orange" class="theme-color orange"> &nbsp;</button>
+                <button type="button" data-color="green" title="green" class="theme-color green"> &nbsp;</button>
+                <button type="button" data-color="blue" title="blue" class="theme-color blue"> &nbsp;</button>
+                <button type="button" data-color="purple" title="purple" class="theme-color purple"> &nbsp;</button>
+            </div>
+        </div>
+        <div class="font-theme-bar">
+            <h3>Font</h3>
+            <div class="font-buttons">
+                <button type="button" data-font="sans" title="Change to a Sans-Serif Font" class="font-style sans"> Sans-Serif</button>
+                <button type="button" data-font="serif" title="Change to a Serif Font" class="font-style serif"> Serif</button>
+                <button type="button" data-font="mono" title="Chnage to a Monospace Font" class="font-style mono"> Monospace</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bar {
+        text-align: center;
+        margin: 12px 0;
+    }
+
+    .theme-options {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        align-items: flex-end;
+    }
+
+    .color-theme-bar {
+        text-align: left;
+    }
+
+    .color-theme-bar h3 {
+        margin-bottom: 0.3rem;
+    }
+
+    .theme-color {
+        border-style: solid;
+        cursor: pointer;
+        display: inline-block;
+        width: 90px;
+    }
+
+    .theme-color.red {
+        border-color: var(--primary-color-red);
+        background: var(--primary-color-red);
+    }
+
+    .theme-color.orange {
+        border-color: var(--primary-color-orange);
+        background: var(--primary-color-orange);
+    }
+
+    .theme-color.green {
+        border-color: var(--primary-color-green);
+        background: var(--primary-color-green);
+    }
+
+    .theme-color.blue {
+        border-color: var(--primary-color-blue);
+        background: var(--primary-color-blue);
+    }
+
+    .theme-color.purple {
+        border-color: var(--primary-color-purple);
+        background: var(--primary-color-purple);
+    }
+
+    .font-theme-bar {
+        text-align: left;
+    }
+
+    .heading {
+        margin-bottom: 0.3rem;
+    }
+
+    .font-style {
+        border-style: solid;
+        border-color: var(--primary-color-1);
+        background: var(--grey-1);
+        cursor: pointer;
+        width: 120px;
+    }
+
+    .font-style:hover {
+        background: var(--primary-color-2);
+    }
+
+    .font-style.sansSerif {
+        font-family: var(--sans-serif);
+    }
+
+    .font-style.serif {
+        font-family: var(--serif);
+    }
+
+    .font-style.monospaced {
+        font-family: var(--monospaced);
+    }
+</style>
+
+<script>
+    import { changeColor, changeFont } from '@lib/configUtils';
+    import type { SiteColor, SiteFont } from '@models/SiteTheme';
+
+    const colorButtons = document.querySelectorAll('button.theme-color');
+    const fontButtons = document.querySelectorAll('button.font-style');
+
+    colorButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const btn = e.target as HTMLButtonElement;
+
+            const color = btn.getAttribute('data-color') as SiteColor;
+            changeColor(color);
+        });
+    });
+
+    fontButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const btn = e.target as HTMLButtonElement;
+
+            const font = btn.getAttribute('data-font') as SiteFont;
+            changeFont(font);
+        });
+    });
+</script>

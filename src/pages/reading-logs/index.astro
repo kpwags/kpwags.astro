@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getPostExcerpt, sortReadingLogs } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+const readingLogs = await getCollection('readinglogs');
+
+const logs = sortReadingLogs(readingLogs).slice(0, 10);
+---
+
+<BaseLayout title="Reading Logs - Keith Wagner">
+    <main>
+        {
+            logs.map((log) => (
+                <BlogLink
+                    title={log.data.title}
+                    link={`/reading-log/${log.data.id}`}
+                    date={log.data.date}
+                    tags={log.data.tags}
+                    excerpt={getPostExcerpt(log.body)}
+                />
+            ))
+        }
+
+        <section class="pagination">
+            <a href="/reading-logs/2">Older Reading Logs &rightarrow;</a>
+        </section>
+    </main>
+</BaseLayout>

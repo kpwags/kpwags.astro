@@ -1,0 +1,100 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import MediaListing from '@components/MediaListing.astro';
+import movies from '@data/movies';
+---
+
+<BaseLayout title="Movies - Keith Wagner">
+    <div class="cover movies-img"></div>
+    <main class="full-width container">
+        <h1>Movies</h1>
+
+        <p>
+            I&apos;ve certainly seen more than this, but I figured I&apos;d update this list with some of my thoughts for the movies I&apos;ve watched
+            more recently.
+        </p>
+
+        <p class="notes">Most recent at top.</p>
+
+        <p class="last-update">
+            Last Updated: {movies.lastUpdate}
+        </p>
+
+        {
+            movies.years.map((year) => (
+                <div>
+                    <h2>
+                        {year.year} ({year.movies.length})
+                    </h2>
+
+                    <div class="book-grid">
+                        {year.movies.map((movie) => (
+                            <MediaListing media={movie} includeReview />
+                        ))}
+                    </div>
+                </div>
+            ))
+        }
+    </main>
+</BaseLayout>
+
+<style>
+    .movies-img {
+        background-image: url('/images/covers/movies.jpg');
+        background-position: 63% 50%;
+    }
+
+    .container h2 {
+        margin: 3rem 0 2rem 0;
+    }
+
+    .container .last-update,
+    .container .notes {
+        margin: 12px 0;
+        font-style: italic;
+    }
+
+    .book-grid {
+        margin: 0 0 2.5rem;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-column-gap: 0.6rem;
+        grid-row-gap: 2.5rem;
+        justify-items: center;
+    }
+
+    @media all and (max-width: 767px) {
+        .container p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+</style>
+
+<script>
+    const toggleButtons = document.querySelectorAll('button.toggle-thoughts');
+
+    const toggleThoughts = (thoughtsId: string) => {
+        const thoughtsDiv = document.getElementById(thoughtsId) as HTMLDivElement;
+
+        if (!thoughtsDiv) {
+            return;
+        }
+
+        if (thoughtsDiv.style.display === 'none') {
+            thoughtsDiv.style.display = 'block';
+        } else {
+            thoughtsDiv.style.display = 'none';
+        }
+    };
+
+    toggleButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const btn = e.target as HTMLButtonElement;
+
+            const thoughtsId = btn.getAttribute('data-thoughtsId') as string;
+            toggleThoughts(thoughtsId);
+        });
+    });
+</script>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { CollectionEntry, getCollection } from 'astro:content';
+import { combineBlogAndReadingLog, getUniqueTags } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+import type { CombinedPost } from 'src/models/CombinedPost';
+
+interface Props {
+    name: string;
+    url: string;
+    blogEntries: CollectionEntry<'blog'>[];
+    readingLogs: CollectionEntry<'readinglogs'>[];
+}
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection('blog');
+    const readingLogs = await getCollection('readinglogs');
+
+    const uniqueTags = getUniqueTags(blogEntries, readingLogs);
+
+    return uniqueTags.map((tag) => ({
+        params: { tag: tag.url },
+        props: {
+            name: tag.name,
+            url: tag.url,
+            posts: combineBlogAndReadingLog(
+                blogEntries.filter((blog) => blog.data.tags.includes(tag.name)),
+                readingLogs.filter((log) => log.data.tags.includes(tag.name)),
+            ),
+        },
+    }));
+}
+
+const { name, url, posts } = Astro.props;
+
+const totalPosts = posts.length;
+
+const taggedPosts = posts.slice(0, 10);
+---
+
+<BaseLayout title={`Posts Tagged ${name} - Keith Wagner`}>
+    <main>
+        <h1>Posts Tagged {name}</h1>
+
+        {
+            taggedPosts.map((post: CombinedPost) => (
+                <BlogLink title={post.title} link={post.link} date={post.date} tags={post.tags} excerpt={post.excerpt} />
+            ))
+        }
+
+        {
+            totalPosts > 10 ? (
+                <section class="pagination">
+                    <a href={`/tag/${url}/2`}>Older Posts &rightarrow;</a>
+                </section>
+            ) : null
+        }
+    </main>
+</BaseLayout>

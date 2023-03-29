@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPermalink, getPostExcerpt, sortPosts, calculateReadingTime } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }: any) {
+    const blogPosts = await getCollection('blog');
+
+    let posts = sortPosts(blogPosts);
+    posts = posts.filter((p) => !p.data.isRssOnly);
+
+    return paginate(posts, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Blog - Keith Wagner">
+    <main>
+        <h1>Blog</h1>
+        {
+            page.data.map((post: any) => (
+                <BlogLink
+                    title={post.data.title}
+                    link={getPermalink(post)}
+                    date={post.data.date}
+                    tags={post.data.tags}
+                    excerpt={post.data.excerpt || getPostExcerpt(post.body)}
+                    readTime={calculateReadingTime(post.body)}
+                />
+            ))
+        }
+        <section class="pagination">
+            {page.url.prev ? <a href={page.url.prev}>&leftarrow; Newer Posts</a> : null}
+            {page.url.next ? <a href={page.url.next}>Older Posts &rightarrow;</a> : null}
+        </section>
+    </main>
+</BaseLayout>

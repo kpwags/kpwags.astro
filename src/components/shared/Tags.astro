@@ -1,0 +1,43 @@
+---
+import { generateTagUrl } from '@lib/postUtils';
+
+interface Props {
+    tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<ul class="tag-list">
+    {
+        tags.map((tag) => (
+            <li>
+                <a href={`/tag/${generateTagUrl(tag)}`}>{tag}</a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    .tag-list {
+        margin: 1rem 0 1.5rem 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .tag-list li {
+        display: inline-block;
+        list-style-type: none;
+        padding: 0 30px 0 0;
+        line-height: 2;
+    }
+
+    .tag-list li:first-child {
+        padding-left: 0;
+    }
+
+    .tag-list li a {
+        white-space: nowrap;
+        font-size: 1.2rem;
+    }
+</style>
