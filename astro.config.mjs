@@ -9,5 +9,6 @@ export default defineConfig({
   },
   integrations: [mdx({
     drafts: true
-  })]
+  })],
+  site: 'https://kpwags.com',
 });

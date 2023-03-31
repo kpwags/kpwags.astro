@@ -4,4 +4,5 @@ export interface CombinedPost {
     date: Date;
     tags: string[];
     excerpt: string;
+    content?: string;
 }

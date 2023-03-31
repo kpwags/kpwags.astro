@@ -1,5 +1,7 @@
 ---
 import LightDarkSwitch from './LightDarkSwitch.astro';
+import RssButton from './RssButton.astro';
+import RssFeedBar from './RssFeedBar.astro';
 import SettingsButton from './SettingsButton.astro';
 import SiteThemeBar from './SiteThemeBar.astro';
 ---
@@ -18,10 +20,12 @@ import SiteThemeBar from './SiteThemeBar.astro';
         </nav>
     </div>
     <div class="config">
+        <RssButton />
         <SettingsButton />
         <LightDarkSwitch />
     </div>
 </header>
+<RssFeedBar />
 <SiteThemeBar />
 
 <style>
@@ -71,6 +75,7 @@ import SiteThemeBar from './SiteThemeBar.astro';
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        gap: 1rem;
     }
 </style>
 
@@ -86,6 +91,22 @@ import SiteThemeBar from './SiteThemeBar.astro';
                     themeControlBar.style.display = 'block';
                 } else {
                     themeControlBar.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    const rssButton = document.getElementById('rss-button');
+
+    if (rssButton) {
+        rssButton.addEventListener('click', () => {
+            const rssBar = document.getElementById('site-rss-links');
+
+            if (rssBar) {
+                if (rssBar.style.display === 'none') {
+                    rssBar.style.display = 'flex';
+                } else {
+                    rssBar.style.display = 'none';
                 }
             }
         });
