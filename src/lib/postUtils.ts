@@ -65,12 +65,13 @@ export const getPostExcerpt = (entry: string): string => {
     return excerpt.replace('<p>', '').replace('</p>', '');
 };
 
-export const getPermalink = (post: CollectionEntry<"blog">): string => {
+export const getPermalink = (post: CollectionEntry<"blog">, includeRootUrl = false): string => {
+    const rootUrl = includeRootUrl ? 'https://kpwags.com' : '';
     const year = post.data.date.getFullYear();
     const month = String(post.data.date.getMonth() + 1).padStart(2, '0');
     const day = String(post.data.date.getDate() + 1).padStart(2, '0');
 
-    return `/posts/${year}/${month}/${day}/${post.data.urlSlug || post.slug}`
+    return `${rootUrl}/posts/${year}/${month}/${day}/${post.data.urlSlug || post.slug}`
 };
 
 export const combineBlogAndReadingLog = (blogEntries: CollectionEntry<"blog">[], readingLogs: CollectionEntry<"readinglogs">[]): CombinedPost[] => {
@@ -81,6 +82,7 @@ export const combineBlogAndReadingLog = (blogEntries: CollectionEntry<"blog">[],
             date: post.data.date,
             tags: post.data.tags,
             excerpt: getPostExcerpt(post.body),
+            content: post.body,
         })),
         ...readingLogs.map((log) => ({
             title: log.data.title,
@@ -88,6 +90,7 @@ export const combineBlogAndReadingLog = (blogEntries: CollectionEntry<"blog">[],
             date: log.data.date,
             tags: log.data.tags,
             excerpt: getPostExcerpt(log.body),
+            content: log.body,
         })),
     ]);
 };
