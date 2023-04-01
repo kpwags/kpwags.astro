@@ -1,0 +1,53 @@
+---
+interface Props {
+    name: string;
+    link: string;
+    artwork: string | null | undefined;
+}
+
+const { name, link, artwork } = Astro.props;
+---
+
+<div class="item">
+    <a href={link} title={name} target="_blank" rel="noreferrer">
+        <img src={`/images/podcasts/${artwork}`} alt={name} />
+    </a>
+    <a href={link} title={name} target="_blank" rel="noreferrer">
+        {name}
+    </a>
+</div>
+
+<style>
+    .item {
+        font-size: 1.1rem;
+        text-align: center;
+        vertical-align: top;
+        line-height: 1.3;
+    }
+
+    .item img {
+        border: 1px solid #bcbcbc;
+        margin-bottom: 5px;
+        aspect-ratio: 1 / 1;
+    }
+
+    .item img:hover {
+        animation: pulse-animation 2s infinite;
+    }
+
+    @media all and (max-width: 475px) {
+        .item img {
+            margin: 0 auto;
+        }
+    }
+
+    @keyframes pulse-animation {
+        0% {
+            box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+        }
+
+        100% {
+            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+        }
+    }
+</style>
