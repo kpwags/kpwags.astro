@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Podcast from '@components/Podcast.astro';
+import podcasts from '@data/podcasts';
+---
+
+<BaseLayout title="Podcasts - Keith Wagner">
+    <main class="full-width">
+        <div class="container">
+            <h1>Podcasts I Listen To</h1>
+
+            <p>
+                Yes, I subscribe to a lot of podcasts. No, I don&apos;t necessarily listen to every episode. You can also <a
+                    href="/other/podcasts.opml">download my opml file</a
+                >.
+            </p>
+
+            <ul class="categories">
+                {
+                    podcasts.map(({ name: categoryName, podcasts: podcastsInCategory }) => (
+                        <>
+                            <li class="category-name">{categoryName}</li>
+
+                            <div class="podcast-grid">
+                                {podcastsInCategory
+                                    .filter((p) => p.artwork !== undefined)
+                                    .map(({ name: podcastName, link, artwork }) => (
+                                        <Podcast name={podcastName} link={link} artwork={artwork} />
+                                    ))}
+                            </div>
+                        </>
+                    ))
+                }
+            </ul>
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .categories {
+        margin: 0;
+        padding: 0;
+    }
+
+    .categories li {
+        list-style-type: none;
+        margin: 25px 0 12px 0;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
+    .podcast-grid {
+        margin: 0 0 40px;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-column-gap: 10px;
+        grid-row-gap: 20px;
+    }
+
+    @media all and (max-width: 767px) {
+        .container h1 {
+            font-size: 1.8rem;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .container p {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .categories {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+</style>
