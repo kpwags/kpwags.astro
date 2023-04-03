@@ -1,7 +1,48 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { combineBlogAndReadingLog } from '@lib/postUtils';
+import BlogLink from '@components/shared/BlogLink.astro';
+import type { CombinedPost } from '@models/CombinedPost';
+
+const blogPosts = await getCollection('blog');
+const readingLogs = await getCollection('readinglogs');
+
+const posts = combineBlogAndReadingLog(blogPosts.slice(0, 5), readingLogs.slice(0, 5));
 ---
 
 <BaseLayout title="Keith Wagner">
-    <p>Hello!</p>
+    <main>
+        <section class="welcome">
+            <h1>Hi! I'm Keith!</h1>
+            <p>I'm a software developer in the Philadelphia area. I am always learning and building new things.</p>
+        </section>
+
+        <section class="most-recent">
+            <h2>Most Recent Posts</h2>
+            {
+                posts
+                    .slice(0, 7)
+                    .map((post: CombinedPost) => (
+                        <BlogLink title={post.title} link={post.link} date={post.date} tags={post.tags} excerpt={post.excerpt} />
+                    ))
+            }
+        </section>
+    </main>
 </BaseLayout>
+
+<style>
+    section.welcome {
+        margin: 2rem 0 4rem;
+    }
+
+    section.welcome h1 {
+        line-height: 1;
+        font-size: 2.5rem;
+        margin: 0 0 0.5rem;
+    }
+
+    section.most-recent h2 {
+        margin-bottom: 1.5rem;
+    }
+</style>
