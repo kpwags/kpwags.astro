@@ -27,6 +27,12 @@ import SiteThemeBar from './SiteThemeBar.astro';
         <LightDarkSwitch />
     </div>
 </header>
+<nav class="mobile-nav">
+    <a href="/blog">Blog</a>
+    <a href="/reading-logs">Reading Logs</a>
+    <a href="/reading-logs">Photography</a>
+    <a href="/about">About</a>
+</nav>
 <RssFeedBar />
 <SiteThemeBar />
 
@@ -73,11 +79,39 @@ import SiteThemeBar from './SiteThemeBar.astro';
         padding-right: 1.5rem;
     }
 
+    nav.mobile-nav {
+        display: none;
+        margin: 1rem 0 3rem;
+        gap: 2rem;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
     header div.config {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 1rem;
+    }
+
+    @media (max-width: 880px) {
+        header nav {
+            display: none;
+        }
+
+        nav.mobile-nav {
+            display: flex;
+        }
+    }
+
+    @media (max-width: 414px) {
+        header div.logo img {
+            display: none;
+        }
+
+        nav.mobile-nav a:last-child {
+            display: none;
+        }
     }
 </style>
 
