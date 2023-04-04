@@ -1,7 +1,13 @@
-import type { CollectionEntry } from "astro:content";
+import { CollectionEntry, getCollection } from "astro:content";
 // @ts-expect-error
 import markdown from '@lib/drawdown';
 import type { CombinedPost } from "src/models/CombinedPost";
+
+export const getPublicPosts = async (): Promise<CollectionEntry<"blog">[]> => {
+    const posts = await getCollection("blog");
+
+    return posts.filter((p) => !p.data.isRssOnly);
+}
 
 export const calculateReadingTime = (content: string): number => {
     const wordCount = content.split(' ').length - 1;

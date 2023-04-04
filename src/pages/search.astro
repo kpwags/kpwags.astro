@@ -1,0 +1,59 @@
+---
+import SearchForm from '@components/SearchForm.astro';
+import BlogLink from '@components/shared/BlogLink.astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { combineBlogAndReadingLog, getPublicPosts } from '@lib/postUtils';
+import type { CombinedPost } from '@models/CombinedPost';
+import { getCollection } from 'astro:content';
+
+const keywords = Astro.url.searchParams.get('q')! || '';
+let results: CombinedPost[] = [];
+
+if (keywords.trim().length > 0) {
+    const blogPosts = await getPublicPosts();
+    const readingLogs = await getCollection('readinglogs');
+
+    const filteredBlogPosts = blogPosts.filter(
+        (p) => p.body.toLowerCase().includes(keywords.toLowerCase()) || p.data.title.toLowerCase().includes(keywords.toLowerCase()),
+    );
+    const filteredReadingLogs = readingLogs.filter(
+        (p) => p.body.toLowerCase().includes(keywords.toLowerCase()) || p.data.title.toLowerCase().includes(keywords.toLowerCase()),
+    );
+
+    results = combineBlogAndReadingLog(filteredBlogPosts, filteredReadingLogs);
+}
+---
+
+<BaseLayout title="Search - Keith Wagner">
+    <main>
+        <SearchForm keywords={keywords} />
+
+        <h2 class="heading">Search Results for `{keywords}`</h2>
+
+        {
+            results.length > 0 ? (
+                <>
+                    <p>{results.length} Posts Found</p>
+                    <section class="search-results">
+                        {results.map((post: CombinedPost) => (
+                            <BlogLink title={post.title} link={post.link} date={post.date} tags={post.tags} excerpt={post.excerpt} />
+                        ))}
+                    </section>
+                </>
+            ) : (
+                <p class="no-results">No Results Found</p>
+            )
+        }
+    </main>
+</BaseLayout>
+
+<style>
+    .search-results,
+    h2.heading {
+        margin-top: 3rem;
+    }
+
+    p.no-results {
+        margin: 3rem 0;
+    }
+</style>

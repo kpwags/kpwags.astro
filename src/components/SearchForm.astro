@@ -1,0 +1,64 @@
+---
+interface Props {
+    keywords?: string;
+}
+
+const { keywords } = Astro.props;
+---
+
+<form id="search-form">
+    <input
+        class="search-field"
+        id="search-field"
+        name="keywords"
+        type="text"
+        placeholder="Search"
+        aria-label="Search Keywords"
+        required
+        value={keywords ?? ''}
+    />
+    <button type="submit" class="search-button">Search</button>
+</form>
+
+<style>
+    #search-form {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+    .search-field {
+        padding: 10px;
+        border-radius: 2px;
+        width: 300px;
+        border: 1px solid var(--black-3);
+    }
+
+    .search-button {
+        background: var(--primary-color-1);
+        color: #fefefe;
+        border: none;
+        padding: 10px 15px;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .search-button:hover {
+        background: var(--primary-color-3);
+    }
+</style>
+
+<script>
+    const searchForm = document.getElementById('search-form');
+    const keywordsField = document.getElementById('search-field') as HTMLInputElement;
+
+    if (searchForm && keywordsField) {
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const keywords = keywordsField.value;
+
+            const encodedSearchTerms = decodeURI(keywords);
+            window.document.location = `/search?q=${encodedSearchTerms}`;
+        });
+    }
+</script>
